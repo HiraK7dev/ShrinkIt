@@ -1,20 +1,15 @@
 import React from "react";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button } from "@nextui-org/react";
 import ShrinkItIcon from '../assets/ShrinkIt_Icon.png'
+import { NavLink } from "react-router-dom";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const menuItems = [
-    "Profile",
+    "Home",
     "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
+    "About",
     "Log Out",
   ];
 
@@ -26,26 +21,26 @@ export default function Header() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <img src={ShrinkItIcon} alt="icon" className="w-12"/>
+          <img src={ShrinkItIcon} alt="icon" className="w-12" />
           <p className="font-bold text-inherit">ShrinkIt</p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem isActive>
-          <Link href="#" aria-current="page">
+        <NavbarItem>
+          <NavLink to='/' className={({ isActive }) => isActive ? 'text-blue-500' : ''}>
             Home
-          </Link>
+          </NavLink>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
-            More
-          </Link>
+          <NavLink to='/dashboard' className={({ isActive }) => isActive ? 'text-blue-500' : ''}>
+            Dashboard
+          </NavLink>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="#">
+          <NavLink to='/about' className={({ isActive }) => isActive ? 'text-blue-500' : ''}>
             About
-          </Link>
+          </NavLink>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent justify="end">
@@ -61,16 +56,16 @@ export default function Header() {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
+            <NavLink
               color={
                 index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
               }
               className="w-full"
-              href="#"
+              to={ item == `Home`? `/` : `/${item}`}
               size="lg"
             >
               {item}
-            </Link>
+            </NavLink>
           </NavbarMenuItem>
         ))}
       </NavbarMenu>

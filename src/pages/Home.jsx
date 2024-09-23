@@ -3,6 +3,7 @@ import Image from '../assets/Image.jpg'
 import { Button, Divider } from '@nextui-org/react'
 import Shortner from '../components/Shortner'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 
 function Home() {
     return (
@@ -24,7 +25,7 @@ function Home() {
                             Get Started
                         </Button>
                         <Divider orientation="vertical" className='mx-6' />
-                        <p className='cursor-pointer'>Explore More</p>
+                        <Link to='/dashboard' className='cursor-pointer'>Explore More</Link>
                     </div>
 
                 </div>
