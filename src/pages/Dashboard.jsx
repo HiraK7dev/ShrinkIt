@@ -1,7 +1,41 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Input } from '@nextui-org/react'
+import { linkContextData } from '../context/LinkContext'
+import axios from 'axios';
 
 function Dashboard() {
+
+    const { link, setLink } = useContext(linkContextData);
+    const [copyButtonColor, setcopyButtonColor] = useState('success');
+    const [copyLink, setcopyLink] = useState('');
+    const [deleteUrl, setdeleteUrl] = useState('');
+    async function getLink() {
+        try {
+            const result = await axios.post('/url', {
+                "redirectUrl": `${link}`
+            });
+            setcopyLink('http://localhost:3000/' + result.data.shortId);
+            setcopyButtonColor('success');
+        } catch (error) {
+            console.log('error: ' + error);
+            setcopyButtonColor('danger');
+            setcopyLink('ERROR')
+        }
+    }
+    async function deleteLink() {
+        const data = deleteUrl.split('/');
+        try {
+            const result = await axios.delete(`/url/${data[data.length - 1]}`);  
+        } catch (error) {
+            console.log('error: ' + error);
+        }      
+    }
+    function copyText() {
+        if (navigator && navigator.clipboard && navigator.clipboard.writeText)
+            return navigator.clipboard.writeText(copyLink);
+        return Promise.reject('The Clipboard API is not available.');
+    };
+
     return (
         <>
             <div id='about' className='w-full md:h-[80vh] h-screen flex md:flex-row flex-col p-5'>
@@ -12,21 +46,22 @@ function Dashboard() {
                         <span>
                             <h3 className='mb-2 font-medium text-lg'>Paste your long link here</h3>
                         </span>
-                        <Input type="text" placeholder='https://example.com/my-long-url' size='lg' color='primary' className='mb-4' />
+                        <Input value={link} onChange={(event) => setLink(event.target.value)} type="text" placeholder='https://example.com/my-long-url' size='lg' color='primary' className='mb-4' />
                         <span>
-                            <Button color="primary" variant="shadow" size='lg' className='mb-5'>
+                            <Button onClick={getLink} color="primary" variant="shadow" size='lg' className='mb-5'>
                                 Generate
                             </Button>
                         </span>
                         <p className='mb-5 text-sm'>Enter your long URL in the field above, and with a single click, generate a shorter, more shareable version. It’s quick, easy, and perfect for making your links more manageable!</p>
                         <Input
+                            value={copyLink}
                             disabled
                             type="text"
                             placeholder="https://shrinkit/ac7Ubk9p0"
-                            color='success'
+                            color={copyButtonColor}
                             size='lg'
                             endContent={
-                                <Button color='success' size='sm' radius='md' variant='flat'>COPY</Button>
+                                <Button onClick={copyText} color={copyButtonColor} size='sm' radius='md' variant='flat'>COPY</Button>
                             }
                         />
                     </div>
@@ -38,9 +73,9 @@ function Dashboard() {
                         <span>
                             <h3 className='mb-2 font-medium text-lg'>Paste your short link here</h3>
                         </span>
-                        <Input type="text" placeholder='https://shrinkit/ac7Ubk9p0' size='lg' color='danger' className='mb-4' />
+                        <Input value={deleteUrl} onChange={(event) => setdeleteUrl(event.target.value)} type="text" placeholder='https://shrinkit/ac7Ubk9p0' size='lg' color='danger' className='mb-4' />
                         <span>
-                            <Button color="danger" variant="shadow" size='lg' className='mb-5'>
+                            <Button onClick={deleteLink} color="danger" variant="shadow" size='lg' className='mb-5'>
                                 Delete
                             </Button>
                         </span>

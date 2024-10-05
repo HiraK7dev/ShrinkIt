@@ -7,23 +7,24 @@ import Home from './pages/Home'
 import ProtectedRoutes from './utils/ProtectedRoutes'
 import Dashboard from './pages/Dashboard'
 import About from './pages/About'
+import LinkContext from './context/LinkContext'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <ProtectedRoutes/>,
+    element: <ProtectedRoutes />,
     children: [
       {
         path: '',
-        element: <Home/>
+        element: <Home />
       },
       {
         path: 'dashboard',
-        element: <Dashboard/>
+        element: <Dashboard />
       },
       {
         path: 'about',
-        element: <About/>
+        element: <About />
       }
     ]
   }
@@ -32,7 +33,9 @@ const router = createBrowserRouter([
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <NextUIProvider>
-      <RouterProvider router={router}/>
+      <LinkContext>
+        <RouterProvider router={router} />
+      </LinkContext>
     </NextUIProvider>
   </StrictMode>,
 )

@@ -1,7 +1,19 @@
 import { Button, Input } from '@nextui-org/react'
-import React from 'react'
+import React, { useContext, useState } from 'react'
+import { linkContextData } from '../context/LinkContext';
+import { useNavigate } from 'react-router-dom';
 
 function Shortner() {
+
+  const { setLink } = useContext(linkContextData);
+  const navigate = useNavigate();
+
+  const [text, setText] = useState('');
+  function toDashboard() {
+    setLink(text);
+    navigate('/dashboard');
+  }
+
   return (
     <div id='about' className='w-full h-[70vh] flex md:flex-row flex-col-reverse bg-gradient-to-r from-cyan-500 to-blue-500 p-5'>
       <div className='h-full md:w-[62%] w-full flex justify-center items-center md:p-12 p-0'>
@@ -9,9 +21,9 @@ function Shortner() {
           <span>
             <h3 className='mb-2 font-medium text-lg'>Paste your long link here</h3>
           </span>
-          <Input type="text" placeholder='https://example.com/my-long-url' size='lg' color='primary' variant='bordered' className='mb-4' />
+          <Input value={text} onChange={(event) => setText(event.target.value)} type="text" placeholder='https://example.com/my-long-url' size='lg' color='primary' variant='bordered' className='mb-4' />
           <span>
-            <Button color="primary" variant="shadow" size='lg'>
+            <Button onClick={toDashboard} color="primary" variant="shadow" size='lg'>
               Get your link for free
             </Button>
           </span>
