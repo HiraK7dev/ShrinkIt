@@ -31,7 +31,7 @@ function Home() {
                 </div>
                 <div className='h-full md:w-[62%] w-full flex justify-center items-center'>
 
-                    <img src={Image} alt='logo' className='md:h-3/4 h-2/3' />
+                    <img src={Image} alt='logo' className='md:h-[70%] h-2/3' />
 
                 </div>
             </div>

@@ -9,9 +9,38 @@ function Shortner() {
   const navigate = useNavigate();
 
   const [text, setText] = useState('');
+  const [info, setInfo] = useState({
+    placeholder: 'https://example.com/my-long-url',
+    color: 'primary',
+    isInvalid: false
+  });
+
+  function isValidURL(input) {
+    try {
+      new URL(input);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+
   function toDashboard() {
-    setLink(text);
-    navigate('/dashboard');
+    if (isValidURL(text)) {
+      setLink(text);
+      navigate('/dashboard');
+      setInfo({
+        placeholder: 'https://example.com/my-long-url',
+        color: 'primary',
+        isInvalid: false
+      })
+    } else {
+      setInfo({
+        placeholder: 'Enter your long url here',
+        color: 'danger',
+        isInvalid: true
+      });
+    }
   }
 
   return (
@@ -21,9 +50,9 @@ function Shortner() {
           <span>
             <h3 className='mb-2 font-medium text-lg'>Paste your long link here</h3>
           </span>
-          <Input value={text} onChange={(event) => setText(event.target.value)} type="text" placeholder='https://example.com/my-long-url' size='lg' color='primary' variant='bordered' className='mb-4' />
+          <Input value={text} onChange={(event) => setText(event.target.value)} type="text" placeholder={info.placeholder} size='lg' color={info.color} isInvalid={info.isInvalid} variant='bordered' className='mb-4' />
           <span>
-            <Button onClick={toDashboard} color="primary" variant="shadow" size='lg'>
+            <Button onClick={toDashboard} color={info.color} variant="shadow" size='lg'>
               Get your link for free
             </Button>
           </span>
